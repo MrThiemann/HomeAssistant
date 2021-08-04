@@ -1,0 +1,234 @@
+type: picture-elements
+image: /local/tut/floorplan_off.png
+style: |
+  ha-card {
+  background: none;
+  width: 90%;
+  margin: 0 auto;
+  }
+elements:
+  - type: conditional
+    conditions:
+      - entity: switch.tp_link_01
+        state: 'on'
+    elements:
+      - type: image
+        image: /local/tut/floorplan-kueche-oberboden-on.png
+        tap_action: none
+        hold_action: none
+        style:
+          pointer-events: none
+          transform: translate(0,0)
+          top: 0
+          left: 0
+          right: 0
+          bottom: 0
+          mix-blend-mode: lighten
+  - type: conditional
+    conditions:
+      - entity: light.extended_color_light_3_flur_eg
+        state: 'on'
+    elements:
+      - type: image
+        image: /local/tut/floorplan-flur-wandlicht-on.png
+        tap_action: none
+        hold_action: none
+        style:
+          filter: >-
+            ${ "hue-rotate(" + (states['light.cabinet'].attributes.hs_color  ?
+            states['light.cabinet'].attributes.hs_color[0] : 0) + "deg)"}
+          pointer-events: none
+          transform: translate(0,0)
+          top: 0
+          left: 0
+          right: 0
+          bottom: 0
+          mix-blend-mode: lighten
+          opacity: >-
+            ${states['light.extended_color_light_3_flur_eg'].state === 'on' ?
+            (states['light.extended_color_light_3_flur_eg'].attributes.brightness
+            / 255) : '0'}
+  - type: conditional
+    conditions:
+      - entity: light.philips_ltw010_ab023604_level_light_color_on_off
+        state: 'on'
+    elements:
+      - type: image
+        image: /local/tut/floorplan_aussen_vorne-on.png
+        tap_action: none
+        hold_action: none
+        style:
+          pointer-events: none
+          transform: translate(0,0)
+          top: 0
+          left: 0
+          right: 0
+          bottom: 0
+          mix-blend-mode: lighten
+  - type: conditional
+    conditions:
+      - entity: light.extended_color_light_2
+        state: 'on'
+    elements:
+      - type: image
+        image: /local/tut/floorplan_buero_schreibtisch-on.png
+        tap_action: none
+        hold_action: none
+        style:
+          pointer-events: none
+          transform: translate(0,0)
+          top: 0
+          left: 0
+          right: 0
+          bottom: 0
+          mix-blend-mode: lighten
+  - type: state-icon
+    entity: switch.tp_link_01
+    icon: mdi:lightbulb
+    style:
+      left: 25%
+      top: 50%
+    tap_action:
+      action: toggle
+    hold_action:
+      action: call-service
+      service: honeycomb
+      service_data:
+        entity: switch.tp_link_01
+        xy_pad:
+          x:
+            invert: true
+            service: switch.tp_link_01
+            service_data: null
+            entity_id: entity
+            hue: '[[[ return {{ y }} / 18 * {{ y_percentage }}; ]]]'
+          'y':
+            service: switch.tp_link_01
+            service_data: null
+            entity_id: switch.tp_link_01
+            brightness: '{{ x_percentage }}'
+            percentage: true
+        buttons:
+          - icon: mdi:information-variant
+            tap_action:
+              action: more-info
+          - icon: mdi:fan-speed-1
+            active: '[[[ return entity.attributes.speed == "low" ]]]'
+            tap_action:
+              action: call-service
+              service: fan.set_speed
+              service_data:
+                entity_id: entity
+                speed: low
+          - icon: mdi:fan-speed-2
+            active: '[[[ return entity.attributes.speed == "medium" ]]]'
+            tap_action:
+              action: call-service
+              service: fan.set_speed
+              service_data:
+                entity_id: entity
+                speed: medium
+          - icon: mdi:fan-speed-3
+            active: '[[[ return entity.attributes.speed == "high" ]]]'
+            tap_action:
+              action: call-service
+              service: fan.set_speed
+              service_data:
+                entity_id: entity
+                speed: high
+  - type: state-icon
+    entity: light.extended_color_light_3_flur_eg
+    style:
+      top: 72%
+      left: 22%
+    tap_action:
+      action: toggle
+    hold_action:
+      action: call-service
+      service: honeycomb
+      service-data: null
+      entity: light.extended_color_light_3_flur_eg
+      buttons:
+        - icon: mdi:information_variant
+          tap_action:
+            action: more-info
+        - icon: mdi:fan-speed-1
+          tap_action:
+            action: call-service
+  - type: state-icon
+    entity: light.extended_color_light_2
+    style:
+      top: 95%
+      left: 32%
+    tap_action:
+      action: toggle
+    hold_action:
+      action: call-service
+      service: honeycomb
+      service-data: null
+      entity: light.extended_color_light_2
+      buttons:
+        - icon: mdi:information_variant
+          tap_action:
+            action: more-info
+        - icon: mdi:fan-speed-1
+          tap_action:
+            action: call-service
+  - type: custom:color-lite-card
+    entity: light.my_color_lamp
+    tap_action:
+      action: none
+    image: null
+    color_image: /local/floorplan/CLamp-Color.png
+    style:
+      top: 50%
+      left: 50%
+      width: 100%
+  - type: state-icon
+    entity: light.color_temperature_light_4
+    style:
+      top: 52%
+      left: 16%
+      box-shadow: none
+    tap_action:
+      action: toggle
+    hold_action:
+      action: call-service
+      service: honeycomb
+      service-data: null
+      entity: light.color_temperature_light_4
+      buttons:
+        - icon: mdi:information_variant
+          tap_action:
+            action: more-info
+        - icon: mdi:fan-speed-1
+          tap_action:
+            action: call-service
+  - type: custom:button-card
+    show_name: false
+    color_type: card
+    state:
+      - value: 'on'
+        color: transparent
+        spin: true
+    entity: switch.poolpumpe
+    icon: mdi:fan
+    style:
+      top: 38%
+      left: 76%
+      color: transparent
+      width: 10%
+    tap_action:
+      action: toggle
+    hold_action:
+      action: call-service
+      service: honeycomb
+      service-data: null
+      entity: switch.poolpumpe
+      buttons:
+        - icon: mdi:information_variant
+          tap_action:
+            action: more-info
+        - icon: mdi:fan-speed-1
+          tap_action:
+            action: call-service
