@@ -1,0 +1,28 @@
+alias: Humidity_Uhrzeit
+description: ''
+trigger:
+  - platform: state
+    entity_id: automation.humidity_managementv2
+    from: 'false'
+    to: 'true'
+condition:
+  - condition: time
+    after: '22:00'
+    before: '9:00'
+    weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+  - condition: time
+    after: '22:00'
+    before: '12:00'
+    weekday:
+      - sat
+      - sun
+action:
+  - service: automation.turn_off
+    target:
+      entity_id: automation.humidity_managementv2
+mode: single
