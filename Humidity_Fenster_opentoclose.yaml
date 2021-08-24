@@ -1,0 +1,13 @@
+alias: Humidity_Fenster_opentoclose
+description: ''
+trigger:
+  - platform: state
+    entity_id: sensor.fenster_1
+    from: open
+    to: close
+condition: []
+action:
+  - service: automation.turn_on
+    target:
+      entity_id: automation.humidity_managementv2
+mode: single
