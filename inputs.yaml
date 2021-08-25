@@ -1,6 +1,7 @@
 ## Input _ Helper
 
 input_datetime.justin_aufstehen_schule
+##for these input_datetime you need a special timestamp script
 
 input_boolean.weekday_sunrise
 
