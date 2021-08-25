@@ -1,10 +1,9 @@
-#automation
 alias: Wake-up light alarm with sunrise effect justin
 description: ''
 use_blueprint:
   path: sbyx/wake-up-light-alarm-with-sunrise-effect.yaml
   input:
-    light_entity: light.tybf30886f2fff0d4799zxvf
+    light_entity: light.justin_aufstehen
     check_entity: automation.weekend_sunrise
     manual_time: '19:43:00'
     pre_sunrise_actions:
@@ -13,7 +12,7 @@ use_blueprint:
           message: Justin muss aufstehen
           data:
             actions:
-              - action: SLEEP
+              - action: SLEEP_JUSTIN
                 title: Sleep
               - action: WACH
                 title: Ich bin wach
