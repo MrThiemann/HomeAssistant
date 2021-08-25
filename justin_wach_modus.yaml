@@ -1,0 +1,7 @@
+#script
+alias: justin_wach_modus
+sequence:
+  - service: notify.mobile_app_iphone_von_karsten
+    data:
+      message: Justin ist aufgestanden
+mode: single
