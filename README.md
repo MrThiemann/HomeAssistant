@@ -3,7 +3,7 @@
 ## Diese Automatisierung hilft unseren Kindern beim Aufstehen, indem ein farbenreicher Sonnenaufgang simuliert wird.
 
 In einer Lovelace-Karte kann der Wecker mit einem "input_boolean" Ein-& Ausgeschaltet werden.
-Mit "input_date" wird die Uhrzeit zum Aufstehen eingeschaltet.
+Mit "input_datetime" wird die Uhrzeit zum Aufstehen eingeschaltet. Damit dieser auslösen kann, muss hierfür ein template_script angelegt werden.
 
 <img width="408" alt="Bildschirmfoto 2021-08-24 um 16 24 06" src="https://user-images.githubusercontent.com/54147030/130635912-e9fb05c6-15e8-44ef-bc1f-b543e963e6b0.png">
 
