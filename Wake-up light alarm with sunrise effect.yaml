@@ -1,0 +1,21 @@
+#automation
+alias: Wake-up light alarm with sunrise effect justin
+description: ''
+use_blueprint:
+  path: sbyx/wake-up-light-alarm-with-sunrise-effect.yaml
+  input:
+    light_entity: light.tybf30886f2fff0d4799zxvf
+    check_entity: automation.weekend_sunrise
+    manual_time: '19:43:00'
+    pre_sunrise_actions:
+      - service: notify.mobile_app_iphone_von_karsten
+        data:
+          message: Justin muss aufstehen
+          data:
+            actions:
+              - action: SLEEP
+                title: Sleep
+              - action: WACH
+                title: Ich bin wach
+    sunrise_duration: 5
+    timestamp_sensor: sensor.justin_aufstehen_schule
