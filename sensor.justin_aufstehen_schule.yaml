@@ -1,0 +1,10 @@
+- platform: template
+  sensors:
+    justin_aufstehen_schule:
+      entity_id:
+        - input_datetime.justin_aufstehen_schule    
+      friendly_name: 'Justin Aufwachen Alarm'
+      icon_template: mdi:alarm
+      device_class: timestamp
+      value_template: >
+        {{states('sensor.date')~' '~states('input_datetime.justin_aufstehen_schule')}}
