@@ -1,0 +1,40 @@
+type: grid
+cards:
+  - type: entities
+    entities:
+      - entity: sensor.abfallnaechster
+      - entity: sensor.abfallgelbersack
+        name: Gelbe Tonne
+      - entity: sensor.abfallpapier
+      - entity: sensor.abfallrestmuell
+      - entity: sensor.abfallbio
+  - type: markdown
+    content: |2-
+        ***
+
+
+        ## {{ states.sensor.abfallnaechster.attributes.values() | first |
+        replace("papier", "Papiermüll") | replace("gelbersack", "Gelber Sack") |
+        replace("bio", "Biotonne") | replace("rest", "Restmüll") }}: 
+
+        {{ states.sensor.abfallnaechster.attributes | first | as_timestamp |
+        timestamp_custom("%d.%m.%Y") }}
+
+
+        ***
+
+
+        Restmüll: &nbsp;&nbsp;&nbsp;&nbsp; {{ states.sensor.abfallrestmuell.attributes
+        | first | as_timestamp | timestamp_custom("%d.%m.%Y") }}
+
+
+        Papiermüll: &nbsp;&nbsp;{{ states.sensor.abfallpapier.attributes | first |
+        as_timestamp | timestamp_custom("%d.%m.%Y") }}
+
+
+        Gelber Sack: {{ states.sensor.abfallgelbersack.attributes | first |
+        as_timestamp | timestamp_custom("%d.%m.%Y") }}
+
+        Biotonne: {{ states.sensor.abfallbio.attributes | first |
+        as_timestamp | timestamp_custom("%d.%m.%Y") }}
+columns: 2
