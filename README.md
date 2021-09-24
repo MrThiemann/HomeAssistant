@@ -3,6 +3,8 @@
 Für diejenigen, die Probleme haben Ihren Müllkalender in HomeAssistant einzubinden, habe ich hier die Variante, die ich benutze und die bei mir zu 100% funtioniert!
 
 Ich verwende hierfür ausschließlich meine Kalender-Datei (.ics) - diese sollte ihr von jedem Dienstleister bekommen können. Entweder direkt, oder über Drittanbieter.
+Wichtig hierbei ist, dass die "SUMMARY" aus der ics-Datei sich in den "Typen" der waste_collection.yaml wiederfinden.
+Also steht bei euch "SUMMARY:Biotonne", dann steht dort - type: Biotonne
 
 Die "Abfuhrtermine_privat.ics" lege ich in den Ordner config -> www  ("www/Abfuhrtermine_privat.ics")
 
