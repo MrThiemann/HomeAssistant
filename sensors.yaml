@@ -1,0 +1,32 @@
+# Abfall
+- platform: waste_collection_schedule
+  name: AbfallRestmuell
+  details_format: "upcoming"
+  value_template: '{{ value.daysTo }}'
+  types:
+    - rest
+
+- platform: waste_collection_schedule
+  name: AbfallGelberSack
+  details_format: "upcoming"
+  value_template: '{% if value.daysTo == 0 %}heute{% elif value.daysTo == 1 %}morgen{% else %}in {{value.daysTo}} Tagen{% endif %}'
+  types:
+    - gelbersack
+
+- platform: waste_collection_schedule
+  name: AbfallPapier
+  details_format: "upcoming"
+  value_template: '{{ value.daysTo }}'
+  types:
+    - papier
+
+- platform: waste_collection_schedule
+  name: AbfallBio
+  details_format: "upcoming"
+  value_template: '{{ value.daysTo }}'
+  types:
+     - bio
+
+- platform: waste_collection_schedule
+  name: AbfallNaechster
+  details_format: "upcoming"
