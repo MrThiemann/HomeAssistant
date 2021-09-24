@@ -1,0 +1,2 @@
+#Müllkalender
+waste_collection_schedule: !include includes/waste_collection.yaml
