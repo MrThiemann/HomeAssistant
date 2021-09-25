@@ -6,18 +6,18 @@ sources:
       - type: Reststoff
         alias: rest
         icon: mdi:trash-can
-        #picture: https://IP/local/img/rest.png
+        #picture: /local/img/rest.png
       - type: Gelbe Tonne
         alias: gelbersack
         icon: mdi:recycle
-        #picture: https://IP/local/img/plastik.png
+        #picture: /local/img/plastik.png
       - type: Blaue Tonne
         alias: papier
         icon: mdi:trash-can
-        #picture: https://IP/local/img/papier.png
+        #picture: /local/img/papier.png
       - type: Biotonne
         alias: bio
         icon: mdi:trash-can
-        #picture: https://IP/local/img/bio.png
+        #picture: /local/img/bio.png
 fetch_time: "04:00"
 day_switch_time: "10:00"
