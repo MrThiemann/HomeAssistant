@@ -5,7 +5,7 @@
 blueprint:
   source_url: https://github.com/MrThiemann/HomeAssistant/blob/blueprints/zha_ikea_tradfri_5button_remote_custom_v2.yaml
 
-  name: ZHA - IKEA TRADFRI - 5 Button Remote - Custom Actions V2
+  name: ZHA - IKEA TRADFRI - 5 Button Remote - Custom Actions
 
   description: >-
     This automation simulates the use of the IKEA TRADFRI remote control
@@ -13,21 +13,30 @@ blueprint:
 
   domain: automation
 
+  # input:
+  #   remote:
+  #     name: IKEA TRADFRI remote control
+  #     description: Select the remote control you wish to use.
+  #     selector:
+  #       device:
+  #         integration: zha
+  #         manufacturer: IKEA of Sweden
+  #         model: TRADFRI remote control
   input:
-  motion_sensor:
-    name: Motion Sensor
-    description: This sensor will be synchronized with the light.
-    selector:
-      entity:
-        domain: binary_sensor
-        device_class: motion
-  target_light:
-    name: Lights
-    description: The lights to keep in sync.
-    selector:
-      target:
+    motion_sensor:
+      name: Motion Sensor
+      description: This sensor will be synchronized with the light.
+      selector:
         entity:
-          domain: light
+          domain: binary_sensor
+          device_class: motion
+    target_light:
+      name: Lights
+      description: The lights to keep in sync.
+      selector:
+        target:
+          entity:
+            domain: light
     power_short:
       name: Short Press - Power Button
       description: The action to perform on Short Press of the Power Button
