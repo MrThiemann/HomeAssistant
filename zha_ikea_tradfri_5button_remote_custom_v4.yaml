@@ -4,7 +4,7 @@
 
 blueprint:
   source_url: https://github.com/MrThiemann/HomeAssistant/blob/blueprints/zha_ikea_tradfri_5button_remote_custom_v4.yaml
-
+  
   name: ZHA - IKEA TRADFRI - 5 Button Remote - Custom Actions
 
   description: >-
