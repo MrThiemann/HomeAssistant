@@ -22,7 +22,7 @@ blueprint:
   #      device:
   #        integration: zha
   #        manufacturer: IKEA of Sweden
-  #        model: TRADFRI remote control
+  #        model: Remote Control N2
         selector:
         target:
           entity:
