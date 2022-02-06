@@ -1,8 +1,8 @@
-alias: alexaSHYS
+alias: alexa_actionable_notification_123
 sequence:
   - service: input_text.set_value
     data:
-      entity_id: input_text.alexa_actionable_notification
+      entity_id: input_text.alexa_actionable_notification123
       value: '{"text": "{{ text }}", "event": "{{ event_id }}"}'
   - service: media_player.play_media
     data:
