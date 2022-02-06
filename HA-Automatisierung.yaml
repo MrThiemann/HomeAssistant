@@ -1,0 +1,15 @@
+alias: Alexa Actionable 1
+description: ''
+trigger:
+  - platform: sun
+    event: sunrise
+condition: []
+action:
+  - service: script.activate_alexa_actionable_notification_123
+    data:
+      text: >-
+        The front door has been unlocked for 5 mins, would you like me to lock
+        it?
+      event_id: actionable_notification_lock_left_unlocked
+      alexa_device: media_player.DEIN_echo
+mode: single
