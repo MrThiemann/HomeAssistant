@@ -51,7 +51,7 @@ const windDirections = [
 
 window.customCards = window.customCards || [];
 window.customCards.push({
-  type: "weather-card",
+  type: "kt-weather-card",
   name: "Weather Card",
   description: "A custom weather card with animated icons.",
   preview: true,
@@ -527,4 +527,4 @@ class WeatherCard extends LitElement {
     `;
   }
 }
-customElements.define("weather-card", WeatherCard);
+customElements.define("kt-weather-card", WeatherCard);
