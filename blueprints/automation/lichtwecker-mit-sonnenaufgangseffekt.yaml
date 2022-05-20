@@ -87,7 +87,7 @@ blueprint:
       default: []
       selector:
         action: {}
-  source_url: https://gist.github.com/loremipsum
+  source_url: https://github.com/MrThiemann/HomeAssistant/blob/main/blueprints/automation/lichtwecker-mit-sonnenaufgangseffekt.yaml
 variables:
   light_entity: !input 'light_entity'
   sensor: !input 'timestamp_sensor'
