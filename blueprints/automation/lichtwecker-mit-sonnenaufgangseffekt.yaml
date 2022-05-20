@@ -1,7 +1,6 @@
 blueprint:
   name: Lichtwecker mit Sonnenaufgangseffekt
   description: 'Ein Lichtwecker mit einem Sonnenaufgang in Helligkeit und Farbtemperatur
-    Note: Benötigt date_time_iso Sensor in Konfiguration, nicht manuell ausführbar!!'
   domain: automation
   input:
     light_entity:
@@ -28,6 +27,7 @@ blueprint:
     check_entity:
       name: Zusätzliche zu prüfende Entität, bevor Sonnenaufgang ausgelöst wird
       description: Wenn gesetzt, prüft vor dem Auslösen, ob die Entität 'an' oder 'home' ist.
+      
         Benutze z.B. ein (Arbeitstags-)Sensor, einen device_tracker oder eine Personenentität.
       default: none
       selector:
@@ -46,6 +46,7 @@ blueprint:
     start_brightness:
       name: Minimum brightness
       description: Die Helligkeit zu Beginn. 
+      
         Einige Lichter ignorieren sehr niedrige Werte und könnten stattdessen mit voller Helligkeit einschalten!
       default: 1
       selector:
