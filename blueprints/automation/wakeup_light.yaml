@@ -1,0 +1,229 @@
+blueprint:
+  name: RGB-Aufwachlicht mit Zeit
+  description:  'Erstellt ein Aufwachlicht mit Hilfe einer RGB(w)-Lampe
+    
+    Zeigt an, ob es bereits Zeit zum Aufstehen ist, oder nicht...
+    
+    Nützlich für kleinere Kinder, die noch keine Uhr lesen können.
+    
+    Zur Startzeit wird das Licht ROT geschaltet.
+    
+    15 Minuten vor der Weckzeit wird das Licht auf violett umgestellt
+    
+    Zur eingestellten Weckzeit wechselt die Lampe auf die Farbe GRÜN
+    
+    Zur Stoppzeit wird das Licht wieder AUS-geschaltet.
+    
+    
+    '
+  domain: automation
+  input:
+    enable_trainer_light:
+      name: Licht aktivieren
+      description: Aktiviere die Aktionen der Automatisierung, um den Zustand der Beleuchtung festzulegen. Wählen eine input_boolean-Entität für diese Eingaben aus.
+      selector: 
+        entity:
+          domain: input_boolean
+    time_start:
+      name: Startzeit festlegen
+      description: Zeit, das Licht rot einzuschalten, bevor es in Ordnung ist, aufzustehen
+      default: "05:30:00"
+      selector:
+        time:
+    time_stop:
+      name: Stopzeit festlegen
+      description: Zeit, das Licht auszuschalten
+      default: "09:00:00"
+      selector:
+        time:
+    time_monday:
+      name: Zeit am Montag
+      description: Uhrzeit, wann am Montag aufgestanden werden soll. Wähle die richtige entity_id aus
+      selector:
+        entity:
+          domain: input_datetime
+    time_tuesday:
+      name: Zeit am Dienstag
+      description: Uhrzeit, wann am Dienstag aufgestanden werden soll. Wähle die richtige entity_id aus
+      selector:
+        entity:
+          domain: input_datetime
+    time_wednesday:
+      name: Zeit am Mittwoch
+      description: Uhrzeit, wann am Mittwoch aufgestanden werden soll. Wähle die richtige entity_id aus
+      selector:
+        entity:
+          domain: input_datetime
+    time_thursday:
+      name: Uhrzeit am Donnerstag
+      description: Uhrzeit, wann am Donnerstag aufgestanden werden soll. Wähle die richtige entity_id aus
+      selector:
+        entity:
+          domain: input_datetime
+    time_friday:
+      name: Uhrzeit am Freitag
+      description: Uhrzeit, wann am Montag aufgestanden werden soll. Wähle die richtige entity_id aus
+      selector:
+        entity:
+          domain: input_datetime
+    time_saturday:
+      name: Uhrzeit am Samstag
+      description: Uhrzeit, wann am Samstag aufgestanden werden soll. Wähle die richtige entity_id aus
+      selector:
+        entity:
+          domain: input_datetime
+    time_sunday:
+      name: Uhrzeit am Sonntag
+      description: Uhrzeit, wann am Sonntag aufgestanden werden soll. Wähle die richtige entity_id aus
+      selector:
+        entity:
+          domain: input_datetime
+    target_light:
+      name: Light
+      description: Wähle das Leuchtmittel aus
+      selector:
+        target:
+          entity:
+            domain: light
+    brightness:
+      name: Brightness
+      description: Helligkeit der Lichter beim Einschalten
+      default: 10
+      selector:
+        number:
+          min: 0.0
+          max: 100.0
+          mode: slider
+          step: 1.0
+          unit_of_measurement: '%'
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: time
+    at:
+      - !input time_start
+      - !input time_stop
+      - !input time_monday
+      - !input time_tuesday
+      - !input time_wednesday
+      - !input time_thursday
+      - !input time_friday
+      - !input time_saturday
+      - !input time_sunday
+  - platform: homeassistant
+    event: start
+
+variables:
+  timestart: !input 'time_start'
+  timestop: !input 'time_stop'
+  timemonday: !input 'time_monday'
+  timetuesday: !input 'time_tuesday'
+  timewednesday: !input 'time_wednesday'
+  timethursday: !input 'time_thursday'
+  timefriday: !input 'time_friday'
+  timesaturday: !input 'time_saturday'
+  timesunday: !input 'time_saturday'
+  
+condition:
+  - condition: state
+    entity_id: !input enable_trainer_light
+    state: 'on'
+    
+action:
+- choose:
+  - conditions:
+      - condition: time
+        after: !input time_stop
+    sequence:
+    - service: light.turn_off
+      target: !input target_light
+      data:
+        transition: 2
+  - conditions:
+    - condition: template
+      value_template: |
+        {% set cdate = now().strftime("%Y-%m-%d ") %}
+        {% set ctime = (now().timestamp() + 1) | int %}
+        {% if now().weekday() in (0,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timemonday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (1,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timetuesday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (2,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timewednesday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (3,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timethursday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (4,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timefriday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (5,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timesaturday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (6,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timesunday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% endif %}
+        {% set starttime = as_timestamp(strptime(cdate + timestart, '%Y-%m-%d %H:%M:%S')) | int %}
+        {{ starttime < ctime < wakeuptime }}
+    sequence:      
+    - service: light.turn_on
+      target: !input target_light
+      data:
+        transition: 2
+        color_name: 'red'
+        white_value: 0
+        brightness_pct: !input brightness
+    - wait_template: |
+        {% set cdate = now().strftime("%Y-%m-%d ") %}
+        {% if now().weekday() in (0,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timemonday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (1,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timetuesday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (2,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timewednesday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (3,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timethursday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (4,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timefriday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (5,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timesaturday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (6,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timesunday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% endif %}
+        {% set curTime = as_timestamp(strptime(cdate + states('sensor.time'), '%Y-%m-%d %H:%M')) | int %}
+        {{ curTime > (wakeuptime - (60 * 15)) }}
+    - service: light.turn_on
+      target: !input target_light
+      data:
+        transition: 2
+        rgb_color: [255,0,170]
+        white_value: 0
+        brightness_pct: !input brightness
+  - conditions:
+    - condition: template
+      value_template: |
+        {% set cdate = now().strftime("%Y-%m-%d ") %}
+        {% set ctime = (now().timestamp() + 1) | int %}
+        {% if now().weekday() in (0,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timemonday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (1,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timetuesday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (2,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timewednesday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (3,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timethursday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (4,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timefriday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (5,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timesaturday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% elif now().weekday() in (6,) %}
+          {% set wakeuptime = as_timestamp(strptime(cdate + states(timesunday), '%Y-%m-%d %H:%M:%S')) | int %}
+        {% endif %}
+        {% set stoptime = as_timestamp(strptime(cdate + timestop, '%Y-%m-%d %H:%M:%S')) | int %}
+        {{ wakeuptime < ctime < stoptime }}
+    sequence:      
+    - service: light.turn_on
+      target: !input target_light
+      data:
+        transition: 2
+        color_name: 'green'
+        white_value: 0
+        brightness_pct: !input brightness
+  
