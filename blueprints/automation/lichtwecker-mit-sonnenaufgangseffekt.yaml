@@ -1,6 +1,6 @@
 blueprint:
   name: Lichtwecker mit Sonnenaufgangseffekt
-  description: 'Ein Lichtwecker mit einem Sonnenaufgang in Helligkeit und Farbtemperatur
+  description: 'Ein Lichtwecker mit einem Sonnenaufgang in Helligkeit und Farbtemperatur'
   domain: automation
   input:
     light_entity:
